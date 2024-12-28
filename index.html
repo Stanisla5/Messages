@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulaire de Contact</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, red, white);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    form {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    form h2 {
+      margin-bottom: 15px;
+      color: #444;
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <form id="contactForm">
+    <h2>Contactez-nous</h2>
+    <label for="name">Nom</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required>
+    
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5" required></textarea>
+    
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxSAxiXUMdeV-AKl03KSpZ_l58CtAb117GsRl1SJ2yTufNMEXsE4buuRmFn27tSTp5n/exec'; // Remplacez par l'URL du déploiement Apps Script.
+
+    document.getElementById('contactForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value,
+      };
+
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          body: JSON.stringify(formData),
+          headers: { 'Content-Type': 'application/json' },
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          alert('Votre message a été envoyé avec succès!');
+          document.getElementById('contactForm').reset();
+        } else {
+          alert('Erreur: ' + result.error);
+        }
+      } catch (error) {
+        alert('Une erreur est survenue. Veuillez réessayer.');
+      }
+    });
+  </script>
+</body>
+</html>
